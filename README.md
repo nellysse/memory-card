@@ -1,16 +1,39 @@
-# React + Vite
+# <p align="center">🧩 Memory Card GAme</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
+  <img src="https://img.shields.io/badge/GitHub_Pages-222222?style=for-the-badge&logo=github&logoColor=white" />
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
+  <strong>Train your brain with style!</strong> A sleek, modern memory matching game.
+  <br />
+  <a href="https://nellysse.github.io/memory-card/"><strong>Explore the Live Demo »</strong></a>
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- ⏱️ **Real-time Stats** – Track your moves and time with a live counter.
+- 🏆 **Personal Records** – Local storage integration to save your best performances.
+- 📱 **Mobile First** – Responsive design that feels like a native app.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+| Tool | Purpose |
+| :--- | :--- |
+| **React 19** | UI components and state management |
+| **Vite** | Lightning-fast development and bundling |
+| **LocalStorage API** | Saving high scores locally |
+| **CSS3 Keyframes** | High-performance card animations |
+
+---
+
+## 🚀 Getting Started
+1. Clone the repository
+   ```bash
+   git clone [https://github.com/nellysse/memory-card.git]
