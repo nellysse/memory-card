@@ -1,8 +1,12 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 
-const PAIRS_COUNT = 4; // medium: 4 pairs = 8 cards, 2x4 grid
+const DIFFICULTY_SETTINGS = {
+  easy: { pairs: 6, label: "Easy", grid: "3x4" },
+  medium: { pairs: 8, label: "Medium", grid: "4x4" },
+  hard: { pairs: 12, label: "Hard", grid: "4x6" },
+};
 
-export const useGameLogic = (cardValues) => {
+export const useGameLogic = (cardValues, difficulty = "medium") => {
   const [cards, setCards] = useState([]);
   const [flippedCards, setFlippedCards] = useState([]);
   const [matchedCards, setMatchedCards] = useState([]);
@@ -14,9 +18,7 @@ export const useGameLogic = (cardValues) => {
   const [bestTime, setBestTime] = useState(null);
   const [bestMoves, setBestMoves] = useState(null);
 
-  const pairsCount = PAIRS_COUNT;
-  const cardValuesRef = useRef(cardValues);
-  cardValuesRef.current = cardValues;
+  const pairsCount = DIFFICULTY_SETTINGS[difficulty].pairs;
 
   const shuffleArray = (array) => {
     const shuffled = [...array];
@@ -28,10 +30,7 @@ export const useGameLogic = (cardValues) => {
   };
 
   const initializeGame = useCallback(() => {
-    // cardValues is [unique1..uniqueN, unique1..uniqueN]; take pairsCount unique, then duplicate for pairs
-    const allValues = cardValuesRef.current;
-    const uniqueValues = allValues.slice(0, allValues.length / 2).slice(0, pairsCount);
-    const selectedValues = [...uniqueValues, ...uniqueValues]; // each icon twice = pairs
+    const selectedValues = cardValues.slice(0, pairsCount);
     const shuffled = shuffleArray(selectedValues);
 
     const finalCards = shuffled.map((value, index) => ({
@@ -49,15 +48,15 @@ export const useGameLogic = (cardValues) => {
     setFlippedCards([]);
     setTimer(0);
     setIsTimerRunning(false);
-  }, []);
+  }, [cardValues, pairsCount]);
 
   useEffect(() => {
-    const savedBestTime = localStorage.getItem("bestTime_medium");
-    const savedBestMoves = localStorage.getItem("bestMoves_medium");
+    const savedBestTime = localStorage.getItem(`bestTime_${difficulty}`);
+    const savedBestMoves = localStorage.getItem(`bestMoves_${difficulty}`);
     
     if (savedBestTime) setBestTime(parseInt(savedBestTime));
     if (savedBestMoves) setBestMoves(parseInt(savedBestMoves));
-  }, []);
+  }, [difficulty]);
 
   useEffect(() => {
     initializeGame();
@@ -104,8 +103,7 @@ export const useGameLogic = (cardValues) => {
       setIsLocked(true);
       setMoves((prev) => prev + 1);
       
-      const firstCard = cards.find((c) => c.id === flippedCards[0]);
-      if (!firstCard) return;
+      const firstCard = cards[flippedCards[0]];
 
       if (firstCard.value === card.value) {
         setTimeout(() => {
@@ -150,12 +148,12 @@ export const useGameLogic = (cardValues) => {
       
       if (!bestTime || timer < bestTime) {
         setBestTime(timer);
-        localStorage.setItem("bestTime_medium", timer.toString());
+        localStorage.setItem(`bestTime_${difficulty}`, timer.toString());
       }
       
       if (!bestMoves || moves < bestMoves) {
         setBestMoves(moves);
-        localStorage.setItem("bestMoves_medium", moves.toString());
+        localStorage.setItem(`bestMoves_${difficulty}`, moves.toString());
       }
 
       const stats = JSON.parse(localStorage.getItem('gameStats') || '{"gamesPlayed": 0, "totalMoves": 0, "totalTime": 0}');
@@ -164,7 +162,7 @@ export const useGameLogic = (cardValues) => {
       stats.totalTime += timer;
       localStorage.setItem('gameStats', JSON.stringify(stats));
     }
-  }, [isGameComplete, moves, timer, bestTime, bestMoves]);
+  }, [isGameComplete, moves, timer, bestTime, bestMoves, difficulty]);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -183,5 +181,6 @@ export const useGameLogic = (cardValues) => {
     formatTime,
     bestTime,
     bestMoves,
+    difficulty,
   };
 };
